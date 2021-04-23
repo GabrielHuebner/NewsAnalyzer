@@ -12,6 +12,8 @@ import newsanalyzer.ctrl.NewsResponseException;
 import newsapi.enums.Category;
 import newsapi.enums.Country;
 
+
+// Github REPO: https://github.com/GabrielHuebner/NewsAnalyzer.git
 public class UserInterface 
 {
 

@@ -10,8 +10,12 @@ import newsapi.enums.Endpoint;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+// Github REPO: https://github.com/GabrielHuebner/NewsAnalyzer.git
 public class Controller {
 
 	public static final String APIKEY = "b72436d7a6cb4ca6bce7e99d10a5ec24";
@@ -55,9 +59,11 @@ public class Controller {
 	}
 
 	public void articleSize(List<Article> articles){
-
+		long res = articles
+						.stream()
+						.count();
 		System.out.println("Number of Articles ##########################################################");
-		//printArticles(articles);
+		System.out.println(res);
 	}
 
 	public void providerMostArticles(List<Article> articles){
@@ -66,13 +72,20 @@ public class Controller {
 	}
 
 	public void authorShortestName(List<Article> articles){
+		String res = articles
+				.stream().filter(e -> e.getAuthor() != null)
+				.min(Comparator.comparingInt(e -> e.getAuthor().length()))
+				.get()
+				.getAuthor();
+
 
 		System.out.println("Author with shortest name ##########################################################");
-		//printArticles(articles);
+		System.out.println(res);
 	}
 
 	public void longestTitleAlphabet(List<Article> articles){
-		System.out.println("Here some sorted Data ##########################################################");
+
+		System.out.println("Sorted by longest Title alphabetically ##########################################################");
 		//printArticles(articles);
 	}
 
