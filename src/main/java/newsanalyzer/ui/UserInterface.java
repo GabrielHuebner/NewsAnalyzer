@@ -4,8 +4,13 @@ package newsanalyzer.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.util.Scanner;
 
 import newsanalyzer.ctrl.Controller;
+import newsanalyzer.ctrl.NewsResponseException;
+import newsapi.enums.Category;
+import newsapi.enums.Country;
 
 public class UserInterface 
 {
@@ -13,30 +18,142 @@ public class UserInterface
 	private Controller ctrl = new Controller();
 
 	public void getDataFromCtrl1(){
-		System.out.println("ABC");
+		System.out.println("Choice Austria");
 
-		ctrl.process();
+		try {
+			ctrl.process(Country.at, Category.health);
+		}
+		catch (MalformedURLException e) {
+			System.out.println("Die URL  ist leider falsch");
+		}
+		catch (NewsResponseException e){
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println("IO Problem");
+		}
 	}
 
 	public void getDataFromCtrl2(){
+		System.out.println("Choice Germany");
+
+		try {
+			ctrl.process(Country.de, Category.health);
+		} catch (MalformedURLException e) {
+			System.out.println("Die URL  ist leider falsch");
+		}
+		catch (NewsResponseException e){
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println("IO Problem");
+		}
 	}
 
 	public void getDataFromCtrl3(){
+		System.out.println("Choice Slovakia");
 
+		try {
+			ctrl.process(Country.sk, Category.health);
+		} catch (MalformedURLException e) {
+			System.out.println("Die URL  ist leider falsch");
+		}
+		catch (NewsResponseException e){
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println("IO Problem");
+		}
 	}
 	
 	public void getDataForCustomInput() {
-		
+		System.out.println("Please enter a Category of your choice for the Country Austria (z.B.: health) :");
+		Scanner scan = new Scanner(System.in);
+		String uInput = scan.next();
+
+		switch(uInput){
+			case "business":
+				try {
+					ctrl.process(Country.at, Category.business);
+				} catch (MalformedURLException e) {
+					System.out.println("Die URL  ist leider falsch");
+				}
+				catch (NewsResponseException e){
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println("IO Problem");
+				}
+				break;
+			case "entertainment":
+				try {
+					ctrl.process(Country.at, Category.entertainment);
+				} catch (MalformedURLException e) {
+					System.out.println("Die URL  ist leider falsch");
+				}
+				catch (NewsResponseException e){
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println("IO Problem");
+				}
+				break;
+			case "health":
+				try {
+					ctrl.process(Country.at, Category.health);
+				} catch (MalformedURLException e) {
+					System.out.println("Die URL  ist leider falsch");
+				}
+				catch (NewsResponseException e){
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println("IO Problem");
+				}
+				break;
+			case "science":
+				try {
+					ctrl.process(Country.at, Category.science);
+				} catch (MalformedURLException e) {
+					System.out.println("Die URL  ist leider falsch");
+				}
+				catch (NewsResponseException e){
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println("IO Problem");
+				}
+				break;
+			case "sports":
+				try {
+					ctrl.process(Country.at, Category.sports);
+				} catch (MalformedURLException e) {
+					System.out.println("Die URL  ist leider falsch");
+				}
+				catch (NewsResponseException e){
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println("IO Problem");
+				}
+				break;
+			case "technology":
+				try {
+					ctrl.process(Country.at, Category.technology);
+				} catch (MalformedURLException e) {
+					System.out.println("Die URL  ist leider falsch");
+				}
+				catch (NewsResponseException e){
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println("IO Problem");
+				}
+				break;
+			default:
+				System.out.println("Please enter one of the following choices: business, entertainment, health, science, sports, technology");
+		}
 	}
 
 
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interfacx");
 		menu.setTitel("Wählen Sie aus:");
-		menu.insert("a", "Choice ABC", this::getDataFromCtrl1);
-		menu.insert("b", "Choice DEF", this::getDataFromCtrl2);
-		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
-		menu.insert("d", "Choice User Imput:",this::getDataForCustomInput);
+		menu.insert("a", "Choice Austria", this::getDataFromCtrl1);
+		menu.insert("b", "Choice Germany", this::getDataFromCtrl2);
+		menu.insert("c", "Choice Slovakia", this::getDataFromCtrl3);
+		menu.insert("d", "Choice User Input (Country):",this::getDataForCustomInput);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {

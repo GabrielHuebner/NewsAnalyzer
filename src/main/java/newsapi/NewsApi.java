@@ -2,6 +2,7 @@ package newsapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import newsanalyzer.ctrl.NewsResponseException;
 import newsapi.beans.NewsReponse;
 import newsapi.enums.*;
 
@@ -104,19 +105,15 @@ public class NewsApi {
         this.endpoint = endpoint;
     }
 
-    protected String requestData() {
+    protected String requestData() throws IOException {
         String url = buildURL();
         System.out.println("URL: "+url);
         URL obj = null;
-        try {
-            obj = new URL(url);
-        } catch (MalformedURLException e) {
-            // TOOO improve ErrorHandling
-            e.printStackTrace();
-        }
+        obj = new URL(url);
+
         HttpURLConnection con;
         StringBuilder response = new StringBuilder();
-        try {
+
             con = (HttpURLConnection) obj.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -124,10 +121,7 @@ public class NewsApi {
                 response.append(inputLine);
             }
             in.close();
-        } catch (IOException e) {
-            // TOOO improve ErrorHandling
-            System.out.println("Error "+e.getMessage());
-        }
+
         return response.toString();
     }
 
@@ -172,7 +166,7 @@ public class NewsApi {
         return sb.toString();
     }
 
-    public NewsReponse getNews() {
+    public NewsReponse getNews() throws IOException, NewsResponseException {
         NewsReponse newsReponse = null;
         String jsonResponse = requestData();
         if(jsonResponse != null && !jsonResponse.isEmpty()){
@@ -184,7 +178,7 @@ public class NewsApi {
                     System.out.println("Error: "+newsReponse.getStatus());
                 }
             } catch (JsonProcessingException e) {
-                System.out.println("Error: "+e.getMessage());
+                throw new NewsResponseException("JSON Problem");
             }
         }
         //TODO improve Errorhandling
