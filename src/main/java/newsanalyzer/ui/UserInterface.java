@@ -74,6 +74,7 @@ public class UserInterface
 		System.out.println("Downloading Files");
 
 		try {
+			ctrl.downloadURL(parDown);
 			ctrl.downloadURL(seqDown);
 		} catch (MalformedURLException e) {
 			System.out.println("Die URL  ist leider falsch");

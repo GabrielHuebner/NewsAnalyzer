@@ -26,7 +26,10 @@ public abstract class Downloader {
             fileName = urlString.substring(urlString.lastIndexOf('/') + 1);
             if (fileName.isEmpty()) {
                 fileName = url4download.getHost() + HTML_EXTENTION;
+
             }
+            fileName = fileName.replaceAll(",","");
+            fileName = fileName.replaceFirst("\\?","");
             os = new FileOutputStream(DIRECTORY_DOWNLOAD + fileName);
 
             byte[] b = new byte[2048];
@@ -35,7 +38,8 @@ public abstract class Downloader {
                 os.write(b, 0, length);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(fileName);
+            System.out.println(e.getMessage());
         } finally {
             try {
                 Objects.requireNonNull(is).close();

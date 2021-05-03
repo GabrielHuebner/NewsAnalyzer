@@ -8,6 +8,8 @@ import newsapi.enums.Category;
 import newsapi.enums.Country;
 import newsapi.enums.Endpoint;
 import newsreader.downloader.Downloader;
+import newsreader.downloader.ParallelDownloader;
+import newsreader.downloader.SequentialDownloader;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -75,7 +77,16 @@ public class Controller {
 
 			urls.forEach(System.out::println);
 
+			long timeBefore = System.currentTimeMillis();
 			downloader.process(urls);
+
+			if(downloader instanceof ParallelDownloader){
+				System.out.println("Parallel downloader time: " + (System.currentTimeMillis() - timeBefore));
+			}
+			else if(downloader instanceof SequentialDownloader){
+				System.out.println("Sequential downloader time: " + (System.currentTimeMillis() - timeBefore));
+			}
+
 		}
 
 	}
