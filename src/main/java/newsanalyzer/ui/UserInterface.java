@@ -11,6 +11,9 @@ import newsanalyzer.ctrl.Controller;
 import newsanalyzer.ctrl.NewsResponseException;
 import newsapi.enums.Category;
 import newsapi.enums.Country;
+import newsreader.downloader.Downloader;
+import newsreader.downloader.ParallelDownloader;
+import newsreader.downloader.SequentialDownloader;
 
 
 // Github REPO: https://github.com/GabrielHuebner/NewsAnalyzer.git
@@ -18,6 +21,8 @@ public class UserInterface
 {
 
 	private Controller ctrl = new Controller();
+	private Downloader parDown = new ParallelDownloader();
+	private Downloader seqDown = new SequentialDownloader();
 
 	public void getDataFromCtrl1(){
 		System.out.println("Choice Austria");
@@ -62,6 +67,21 @@ public class UserInterface
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			System.out.println("IO Problem");
+		}
+	}
+
+	public void downloadLastSearch(){
+		System.out.println("Downloading Files");
+
+		try {
+			ctrl.downloadURL(seqDown);
+		} catch (MalformedURLException e) {
+			System.out.println("Die URL  ist leider falsch");
+		}
+		catch (NewsResponseException e){
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println("IO Problem " + e.getMessage());
 		}
 	}
 	
@@ -156,6 +176,7 @@ public class UserInterface
 		menu.insert("b", "Choice Germany", this::getDataFromCtrl2);
 		menu.insert("c", "Choice Slovakia", this::getDataFromCtrl3);
 		menu.insert("d", "Choice User Input (Country):",this::getDataForCustomInput);
+		menu.insert("e","Choice Download Last Search",this::downloadLastSearch);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {

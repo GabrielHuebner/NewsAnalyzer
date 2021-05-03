@@ -7,12 +7,14 @@ import newsapi.beans.NewsReponse;
 import newsapi.enums.Category;
 import newsapi.enums.Country;
 import newsapi.enums.Endpoint;
+import newsreader.downloader.Downloader;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 // Github REPO: https://github.com/GabrielHuebner/NewsAnalyzer.git
@@ -50,6 +52,32 @@ public class Controller {
 		//TODO implement methods for analysis
 
 		System.out.println("End process");
+	}
+
+	public void downloadURL(Downloader downloader) throws IOException, NewsResponseException {
+		NewsApi newsApi = new NewsApiBuilder()
+				.setQ("corona")
+				.setApiKey(APIKEY)
+				.setEndPoint(Endpoint.TOP_HEADLINES)
+				.setSourceCountry(Country.de)
+				.createNewsApi();
+
+		NewsReponse newsResponse = newsApi.getNews();
+
+		if(newsResponse != null) {
+			List<Article> articles = newsResponse.getArticles();
+
+
+			var urls = articles.stream()
+					.map(Article::getUrl)
+					.filter(Objects::nonNull)
+					.collect(Collectors.toList());
+
+			urls.forEach(System.out::println);
+
+			downloader.process(urls);
+		}
+
 	}
 
 	public void printArticles(List<Article> articles) {
